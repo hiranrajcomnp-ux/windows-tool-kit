@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
-title Windows Repair ^& Maintenance Toolbox
-color 0A
+title Windows Repair ^& Maintenance Toolbox - Neon
+color 5E
 
 :: ============================================================
 :: WINDOWS REPAIR & MAINTENANCE TOOLBOX
@@ -28,7 +28,13 @@ echo.
 echo ============================================================
 echo              WINDOWS REPAIR ^& MAINTENANCE TOOLBOX
 echo ============================================================
-echo                 WMIC-FREE / Windows 10/11
+echo                      /\                 /\
+echo                     /  \   /\     /\   /  \
+echo                    /    \_/  \___/  \_/    \
+echo                   /                           \
+echo                   \    /\               /\    /
+echo                    \__/  \_____________/  \__/
+echo          NEON THEME / WMIC-FREE / Windows 10/11
 echo ============================================================
 echo.
 echo  [ 1] System Info
