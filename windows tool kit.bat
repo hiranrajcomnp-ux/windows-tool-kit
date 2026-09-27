@@ -90,6 +90,21 @@ echo  [41] Open Reports Folder
 echo  [42] Restart Windows Explorer
 echo  [43] Open Command Prompt
 echo  [44] Open PowerShell
+echo  [45] Check Disk ^(CHKDSK /r /f /x^)
+echo  [46] Check Disk ^(CHKDSK /r /f /c^)
+echo  [47] DISM CheckHealth
+echo  [48] DISM ScanHealth
+echo  [49] DISM RestoreHealth
+echo  [50] Windows Activation Expiration ^(SLMGR /xpr^)
+echo  [51] File Signature Verification
+echo  [52] Release IP Address
+echo  [53] Renew IP Address
+echo  [54] Flush DNS Cache
+echo  [55] Physical Memory Information
+echo  [56] Detailed Physical Memory Information
+echo  [57] Detailed Operating System Information
+echo  [58] Chris Titus Tech Tool
+echo  [59] Activation Tool
 echo.
 echo  [Q] Exit
 echo.
@@ -139,6 +154,21 @@ if /I "%choice%"=="41" goto REPORTSFOLDER
 if /I "%choice%"=="42" goto RESTARTEXPLORER
 if /I "%choice%"=="43" goto OPENCMD
 if /I "%choice%"=="44" goto OPENPOWERSHELL
+if /I "%choice%"=="45" goto CHKDSK
+if /I "%choice%"=="46" goto CHKDSKC
+if /I "%choice%"=="47" goto DISMCHECK
+if /I "%choice%"=="48" goto DISMSCANHEALTH
+if /I "%choice%"=="49" goto DISMRESTORE
+if /I "%choice%"=="50" goto SLMGRXPR
+if /I "%choice%"=="51" goto SIGVERIF
+if /I "%choice%"=="52" goto IPRELEASE
+if /I "%choice%"=="53" goto IPRENEW
+if /I "%choice%"=="54" goto FLUSHDNSNEW
+if /I "%choice%"=="55" goto MEMORYCIM
+if /I "%choice%"=="56" goto MEMORYCIMDETAIL
+if /I "%choice%"=="57" goto OSCIMDETAIL
+if /I "%choice%"=="58" goto CHRISTITUS
+if /I "%choice%"=="59" goto ACTIVATIONTOOL
 if /I "%choice%"=="Q" goto EXIT
 
 echo.
@@ -564,6 +594,110 @@ goto MENU
 
 :OPENPOWERSHELL
 start "" powershell.exe
+goto MENU
+
+:CHKDSK
+cls
+echo Running CHKDSK /r /f /x...
+chkdsk /r /f /x
+pause
+goto MENU
+
+:CHKDSKC
+cls
+echo Running CHKDSK /r /f /c...
+chkdsk /r /f /c
+pause
+goto MENU
+
+:DISMCHECK
+cls
+echo Running DISM /CheckHealth...
+DISM /Online /Cleanup-Image /CheckHealth
+pause
+goto MENU
+
+:DISMSCANHEALTH
+cls
+echo Running DISM /ScanHealth...
+DISM /Online /Cleanup-Image /ScanHealth
+pause
+goto MENU
+
+:DISMRESTORE
+cls
+echo Running DISM /RestoreHealth...
+DISM /Online /Cleanup-Image /RestoreHealth
+pause
+goto MENU
+
+:SLMGRXPR
+cls
+echo Checking Windows activation expiration...
+slmgr /xpr
+pause
+goto MENU
+
+:SIGVERIF
+cls
+echo Opening File Signature Verification...
+sigverif
+goto MENU
+
+:IPRELEASE
+cls
+echo Releasing IP address...
+ipconfig /release
+pause
+goto MENU
+
+:IPRENEW
+cls
+echo Renewing IP address...
+ipconfig /renew
+pause
+goto MENU
+
+:FLUSHDNSNEW
+cls
+echo Flushing DNS cache...
+ipconfig /flushdns
+pause
+goto MENU
+
+:MEMORYCIM
+cls
+echo Getting physical memory information...
+powershell -NoProfile -Command "Get-CimInstance Win32_PhysicalMemory"
+pause
+goto MENU
+
+:MEMORYCIMDETAIL
+cls
+echo Getting detailed physical memory information...
+powershell -NoProfile -Command "Get-CimInstance Win32_PhysicalMemory | Format-List *"
+pause
+goto MENU
+
+:OSCIMDETAIL
+cls
+echo Getting detailed operating system information...
+powershell -NoProfile -Command "Get-CimInstance Win32_OperatingSystem | Format-List *"
+pause
+goto MENU
+
+:CHRISTITUS
+cls
+echo Running the Chris Titus Tech tool...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://christitus.com | iex"
+pause
+goto MENU
+
+:ACTIVATIONTOOL
+cls
+echo Running the activation tool...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://get.activated.win | iex"
+pause
 goto MENU
 
 :EXIT
