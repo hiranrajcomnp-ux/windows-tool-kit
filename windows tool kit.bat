@@ -26,16 +26,9 @@ if not exist "%REPORTDIR%" mkdir "%REPORTDIR%" >nul 2>&1
 cls
 echo.
 echo ============================================================
-echo              WINDOWS REPAIR ^& MAINTENANCE TOOLBOX
+echo             WINDOWS REPAIR ^& MAINTENANCE TOOLBOX
 echo ============================================================
-echo                      /\                 /\
-echo                     /  \   /\     /\   /  \
-echo                    /    \_/  \___/  \_/    \
-echo                   /                           \
-echo                   \    /\               /\    /
-echo                    \__/  \_____________/  \__/
-echo          
-                             Windows 10/11
+echo                         Windows 10/11
 echo ============================================================
 echo.
 echo  [ 1] System Info
@@ -181,7 +174,6 @@ echo Invalid selection.
 pause
 goto MENU
 
-
 :SYSTEMINFO
 cls
 echo ============================================================
@@ -190,7 +182,6 @@ echo ============================================================
 powershell -NoProfile -Command "$os=Get-CimInstance Win32_OperatingSystem; $cs=Get-CimInstance Win32_ComputerSystem; $cpu=Get-CimInstance Win32_Processor | Select-Object -First 1; Write-Host ('Computer Name : ' + $env:COMPUTERNAME); Write-Host ('Manufacturer  : ' + $cs.Manufacturer); Write-Host ('Model         : ' + $cs.Model); Write-Host ('CPU           : ' + $cpu.Name); Write-Host ('RAM           : ' + [math]::Round($cs.TotalPhysicalMemory/1GB,2) + ' GB'); Write-Host ('Windows       : ' + $os.Caption + ' ' + $os.Version); Write-Host ('Architecture  : ' + $os.OSArchitecture); Write-Host ('Install Date  : ' + $os.InstallDate); Write-Host ('Last Boot     : ' + $os.LastBootUpTime)"
 pause
 goto MENU
-
 
 :SFCSCAN
 cls
@@ -242,7 +233,7 @@ echo.
 echo Disk drive information:
 powershell -NoProfile -Command "Get-CimInstance Win32_DiskDrive | Select-Object Model,SerialNumber,InterfaceType,Status,@{N='SizeGB';E={[math]::Round($_.Size/1GB,2)}} | Format-Table -AutoSize"
 echo.
-echo Storage reliability counters ^(if supported by the drive^):
+echo Storage reliability counters (if supported by the drive):
 powershell -NoProfile -Command "Get-PhysicalDisk | ForEach-Object { try { Get-StorageReliabilityCounter -PhysicalDisk $_ -ErrorAction Stop | Select-Object DeviceId,Temperature,TemperatureMax,ReadErrorsTotal,WriteErrorsTotal,Wear,PowerOnHours | Format-Table -AutoSize } catch { Write-Host 'Reliability counters are not available for one or more drives.' } }"
 pause
 goto MENU
@@ -604,14 +595,16 @@ goto MENU
 :CHKDSK
 cls
 echo Running CHKDSK /r /f /x...
-chkdsk /r /f /x
+echo NOTE: If the system drive is in use, Windows may schedule this for reboot.
+chkdsk %SystemDrive% /r /f /x
 pause
 goto MENU
 
 :CHKDSKC
 cls
 echo Running CHKDSK /r /f /c...
-chkdsk /r /f /c
+echo NOTE: If the system drive is in use, Windows may schedule this for reboot.
+chkdsk %SystemDrive% /r /f /c
 pause
 goto MENU
 
@@ -639,7 +632,7 @@ goto MENU
 :SLMGRXPR
 cls
 echo Checking Windows activation expiration...
-slmgr /xpr
+cscript //nologo "%SystemRoot%\System32\slmgr.vbs" /xpr
 pause
 goto MENU
 
@@ -693,15 +686,46 @@ goto MENU
 
 :CHRISTITUS
 cls
-echo Running the Chris Titus Tech tool...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://christitus.com | iex"
+echo ============================================================
+echo CHRIS TITUS TECH TOOL
+echo ============================================================
+echo This will open the official Chris Titus Tech tool.
+echo Review commands before applying system changes.
+echo.
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm 'https://christitus.com/win' | iex"
 pause
 goto MENU
 
 :ACTIVATIONTOOL
 cls
-echo Running the activation tool...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://get.activated.win | iex"
+echo ============================================================
+echo ACTIVATION
+echo ============================================================
+echo For Windows activation, use your genuine digital license or product key.
+echo Opening Windows Activation settings...
+start "" ms-settings:activation
+pause
+goto MENU
+
+:SHADOWLIST
+cls
+echo ============================================================
+echo SHADOW STORAGE
+echo ============================================================
+vssadmin list shadowstorage
+pause
+goto MENU
+
+:SHADOWRESIZE
+cls
+echo ============================================================
+echo RESIZE SHADOW STORAGE TO 2 GB
+echo ============================================================
+echo WARNING: This changes System Protection shadow-copy storage.
+echo.
+choice /C YN /M "Continue"
+if errorlevel 2 goto MENU
+vssadmin Resize ShadowStorage /For=%SystemDrive% /On=%SystemDrive% /MaxSize=2GB
 pause
 goto MENU
 
