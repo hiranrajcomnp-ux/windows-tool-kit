@@ -105,6 +105,8 @@ echo  [56] Detailed Physical Memory Information
 echo  [57] Detailed Operating System Information
 echo  [58] Chris Titus Tech Tool
 echo  [59] Activation Tool
+echo  [60] View Shadow Storage
+echo  [61] Resize Shadow Storage to 2GB
 echo.
 echo  [Q] Exit
 echo.
@@ -169,6 +171,8 @@ if /I "%choice%"=="56" goto MEMORYCIMDETAIL
 if /I "%choice%"=="57" goto OSCIMDETAIL
 if /I "%choice%"=="58" goto CHRISTITUS
 if /I "%choice%"=="59" goto ACTIVATIONTOOL
+if /I "%choice%"=="60" goto SHADOWLIST
+if /I "%choice%"=="61" goto SHADOWRESIZE
 if /I "%choice%"=="Q" goto EXIT
 
 echo.
