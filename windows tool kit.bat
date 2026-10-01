@@ -34,7 +34,8 @@ echo                    /    \_/  \___/  \_/    \
 echo                   /                           \
 echo                   \    /\               /\    /
 echo                    \__/  \_____________/  \__/
-echo          NEON THEME / WMIC-FREE / Windows 10/11
+echo          
+                             Windows 10/11
 echo ============================================================
 echo.
 echo  [ 1] System Info
